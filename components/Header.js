@@ -1,6 +1,8 @@
+import Link from "next/link";
+import div from "next/link";
 import Logo from "./Logo";
 
-function Header({ isSidebarOpen, setIsSidebarOpen }) {
+function Header({ isSidebarOpen, setIsSidebarOpen, isAdminPage }) {
   return (
     <>
       <nav className="h-16 px-6 py-4 bg-white border-b flex justify-between items-center">
@@ -10,7 +12,16 @@ function Header({ isSidebarOpen, setIsSidebarOpen }) {
         >
           <i className="bx bx-menu text-3xl" />
         </button>
-        <Logo />
+        <Link href={isAdminPage ? "/admin" : "/"}>
+          <div className="p-2 rounded hover:bg-neutral-100 flex flex-col items-end gap-1 cursor-pointer">
+            <Logo />
+            {isAdminPage ? (
+              <p className="leading-3 font-semibold text-gray-600">admin</p>
+            ) : (
+              <></>
+            )}
+          </div>
+        </Link>
       </nav>
     </>
   );
