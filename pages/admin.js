@@ -1,13 +1,13 @@
 import Head from "next/head";
-import Header from "../components/Header";
+import Agenda from "../components/Agenda";
+import PageLayout from "../components/PageLayout";
+import Welcome from "../components/Welcome";
 
-export default function Dashboard() {
+// Admin Dashboard
+export default function AdminDashboard() {
   return (
     <>
-      <Head>
-        <title>Dashboard - Labco</title>
-      </Head>
-      <Header />
+      <PageLayout isAdminPage={true}></PageLayout>
     </>
   );
 }
