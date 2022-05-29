@@ -9,9 +9,20 @@ function LandingPage() {
       isAdminPage={false}
       pageTitle={"LABCO - Home"}
       menuItems={[
+        { title: "Home", href: "/", icon: "bx bxs-home", isCurrentPage: true },
         { title: "Akun", href: "/akun", icon: "bx bx-user" },
+        { title: "Isi Buku Tamu", href: "/buku-tamu", icon: "bx bx-book" },
         { title: "Jadwal Agenda", href: "/agenda", icon: "bx bx-calendar" },
         { title: "Berita dan Informasi", href: "/berita", icon: "bx bx-news" },
+        {
+          title: (
+            <>
+              <div className="text-red-600">Logout</div>
+            </>
+          ),
+          href: "/logout",
+          icon: "bx bx-exit",
+        },
       ]}
     >
       <section className="py-16 px-4 flex flex-col items-center justify-center gap-4 text-center">

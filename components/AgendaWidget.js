@@ -10,18 +10,24 @@ function Agenda(props) {
       </div>
       <div className="flow-root">
         <ul role="list" className="divide-y divide-gray-200 ">
-          <li className="py-3 sm:py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate ">
-                  Lab 1: Mata kuliah jarkom
-                </p>
-                <p className="text-sm text-gray-500 truncate ">
-                  Sekarang, pukul 15.00
-                </p>
-              </div>
-            </div>
-          </li>
+          {Array(5)
+            .fill(0)
+            .map((agendaItem, i) => (
+              <li className="py-3 sm:py-4">
+                <div className="flex items-center space-x-4">
+                  <div className="flex-1 min-w-0">
+                    <Link href={"/detail-agenda/123"}>
+                      <a className="text-sm font-medium text-gray-900 truncate hover:underline">
+                        Lab 1: Mata kuliah jarkom
+                      </a>
+                    </Link>
+                    <p className="text-sm text-gray-500 truncate ">
+                      Sekarang, pukul 15.00
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
         </ul>
       </div>
       <div className="flex flex-row-reverse justify-between items-center mt-4">

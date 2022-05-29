@@ -17,12 +17,19 @@ function Sidebar({ isSidebarOpen, setIsSidebarOpen, menuItems }) {
         <ul className="space-y-2">
           {(menuItems ?? []).map((item) => (
             <li>
-              <Link href={item?.href ?? "#"}>
-                <a className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+              {!(item?.isCurrentPage ?? false) ? (
+                <Link href={item?.href ?? "#"}>
+                  <a className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class={item?.icon ?? ""}></i>
+                    <span className="ml-3">{item?.title}</span>
+                  </a>
+                </Link>
+              ) : (
+                <div className="flex items-center p-2 text-base font-bold text-gray-900 rounded-lg">
                   <i class={item?.icon ?? ""}></i>
                   <span className="ml-3">{item?.title}</span>
-                </a>
-              </Link>
+                </div>
+              )}
             </li>
           ))}
         </ul>

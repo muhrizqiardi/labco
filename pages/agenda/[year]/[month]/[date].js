@@ -15,18 +15,34 @@ function Agenda() {
   return (
     <PageLayout
       isAdminPage={false}
-      pageTitle={"LABCO - Home"}
+      pageTitle={"LABCO - Agenda " + moment(`${year}-${month}-${date}`).format("LL")}
       menuItems={[
+        { title: "Home", href: "/", icon: "bx bx-home" },
         { title: "Akun", href: "/akun", icon: "bx bx-user" },
-        { title: "Jadwal Agenda", href: "/agenda", icon: "bx bx-calendar" },
+        {
+          title: "Isi Buku Tamu",
+          href: "/buku-tamu",
+          icon: "bx bx-book",
+        },
+        {
+          title: "Jadwal Agenda",
+          href: "/agenda",
+          icon: "bx bxs-calendar",
+          isCurrentPage: true,
+        },
         { title: "Berita dan Informasi", href: "/berita", icon: "bx bx-news" },
+        {
+          title: (
+            <>
+              <div className="text-red-600">Logout</div>
+            </>
+          ),
+          href: "/logout",
+          icon: "bx bx-exit",
+        },
       ]}
     >
-      <Breadcrumb
-        items={[
-          { href: "/agenda/", name: "Agenda" },
-        ]}
-      />
+      <Breadcrumb items={[{ href: "/agenda/", name: "Agenda" }]} />
       <h1 className="text-2xl font-bold">Jadwal Agenda</h1>
       <section className="flex gap-6">
         <Button.Secondary
