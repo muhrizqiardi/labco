@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Button from "../../../components/Button";
 import PageLayout from "../../../components/PageLayout";
 import Table from "../../../components/Table";
 
 function ManajemenInventaris() {
+  const router = useRouter();
+
   return (
     <PageLayout
       isAdminPage={true}
@@ -39,7 +42,9 @@ function ManajemenInventaris() {
     >
       <div className="flex justify-between items-center">
         <h1 className="text-md font-bold">Inventaris</h1>
-        <Button.Primary>Tambah Barang Baru</Button.Primary>
+        <Button.Primary onClick={() => router.push("/admin/inventaris/new")}>
+          Tambah Barang Baru
+        </Button.Primary>
       </div>
       <Table
         tableHeaders={[
