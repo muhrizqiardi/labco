@@ -1,24 +1,22 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-export default Item = mongoose.model(
-  "Item",
-  new Schema({
-    name: {
-      type: String,
-      required: true,
-    },
-    itemType: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ItemType",
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    condition: {
-      type: Boolean,
-      required: true,
-    },
-  })
-);
+const ItemSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  condition: {
+    type: Boolean,
+    required: true,
+  },
+  image: {
+    type: Boolean,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
+
+export default mongoose.models.Item || mongoose.model("Item", ItemSchema);
