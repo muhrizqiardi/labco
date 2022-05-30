@@ -1,24 +1,21 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-export default GuestBook = mongoose.model(
-  "GuestBook",
-  new Schema({
-    name: {
-      type: String,
-      required: true,
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    timeVisited: {
-      type: String,
-      required: true,
-    },
-    reason: {
-      type: String,
-      required: true,
-    },
-  })
-);
+const GuestBookSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  startTime: {
+    type: Date,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  // Keperluan
+  usagePurpose  : {
+    type: String,
+    required: true,
+  },
+});
+
+export default mongoose.models.GuestBook ||
+  mongoose.model("GuestBook", GuestBookSchema);
