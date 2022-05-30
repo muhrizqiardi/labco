@@ -44,7 +44,7 @@ function ItemDetail() {
           },
         ]}
       >
-        <h1 className="text-2xl font-bold">Tambah Barang Baru</h1>
+        <h1 className="text-2xl font-bold">Edit Barang</h1>
         <form
           action=""
           className="max-w-2xl mt-8  flex flex-col items-stretch gap-4"
@@ -73,7 +73,7 @@ function ItemDetail() {
             </div>
           </div>
 
-          <Button.Primary>Tambah Barang</Button.Primary>
+          <Button.Primary>Edit Barang</Button.Primary>
         </form>
       </PageLayout>
     </>
