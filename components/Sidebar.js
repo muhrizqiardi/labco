@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function Sidebar({ isSidebarOpen, setIsSidebarOpen, menuItems }) {
+  const router = useRouter();
+
+  const isCurrentPage = (menuItem) => {
+    return router.pathname === menuItem;
+  };
+
   return (
     <aside
       className={`w-full h-full md:w-64 fixed top-0 ${
@@ -17,7 +24,7 @@ function Sidebar({ isSidebarOpen, setIsSidebarOpen, menuItems }) {
         <ul className="space-y-2">
           {(menuItems ?? []).map((item) => (
             <li>
-              {!(item?.isCurrentPage ?? false) ? (
+              {!(isCurrentPage(item?.href)) ? (
                 <Link href={item?.href ?? "#"}>
                   <a className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
                     <i class={item?.icon ?? ""}></i>
@@ -26,7 +33,7 @@ function Sidebar({ isSidebarOpen, setIsSidebarOpen, menuItems }) {
                 </Link>
               ) : (
                 <div className="flex items-center p-2 text-base font-bold text-gray-900 rounded-lg">
-                  <i class={item?.icon ?? ""}></i>
+                  <i class={item?.activeIcon ?? ""}></i>
                   <span className="ml-3">{item?.title}</span>
                 </div>
               )}
