@@ -1,39 +1,48 @@
+import Link from "next/link";
+import Button from "../../../components/Button";
 import PageLayout from "../../../components/PageLayout";
+import Table from "../../../components/Table";
+import { useRouter } from "next/router";
 
-function ManajemenKonten(props) {
+function ContentManagement() {
+  const router = useRouter();
+
   return (
-    <PageLayout
-      isAdminPage={true}
-      pageTitle={"LABCO Admin - Manajemen Inventaris"}
-      menuItems={[
-        {
-          title: "Dashboard",
-          href: "/admin",
-          icon: "bx bx-home",
-        },
-        {
-          title: "Manajemen Inventaris",
-          href: "/admin/inventaris",
-          icon: "bx bxs-user",
-          isCurrentPage: true,
-        },
-        { title: "Manajemen User", href: "/admin/user", icon: "bx bx-user" },
-        {
-          title: "Manajemen Konten Informasi dan Berita",
-          href: "/admin/konten",
-          icon: "bx bx-news",
-        },
-        {
-          title: (
+    <PageLayout isAdminPage={true} pageTitle={"LABCO Admin - Manajemen Konten"}>
+      <div className="flex justify-between items-center">
+        <h1 className="text-md font-bold">Manajemen Konten</h1>
+        <Button.Primary onClick={() => router.push("/admin/konten/new")}>
+          Tulis Berita Baru
+        </Button.Primary>
+      </div>
+      <Table
+        tableHeaders={["Slug", "Judul Artikel", "Penulis", "Tanggal", "Aksi"]}
+        tableData={[
+          [
+            "bebek-goreng-enak-rasanya-beebeb-aku-",
+            "Led ask possible mistress relation elegance eat likewise debating",
+            "rizqi.jpg@gmail.com",
+            "13 April 2020, pukul 13.00",
             <>
-              <div className="text-red-600">Logout</div>
-            </>
-          ),
-          href: "/logout",
-          icon: "bx bx-exit",
-        },
-      ]}
-    ></PageLayout>
+              <Link href="/admin/user/123">
+                <a className="text-blue-700 font-bold hover:underline">Edit</a>
+              </Link>
+            </>,
+          ],
+          [
+            "bebek-goreng-enak-rasanya-beebeb-aku-",
+            "Led ask possible mistress relation elegance eat likewise debating",
+            "rizqi.jpg@gmail.com",
+            "13 April 2020, pukul 13.00",
+            <>
+              <Link href="/admin/user/123">
+                <a className="text-blue-700 font-bold hover:underline">Edit</a>
+              </Link>
+            </>,
+          ],
+        ]}
+      />
+    </PageLayout>
   );
 }
-export default ManajemenKonten;
+export default ContentManagement;
