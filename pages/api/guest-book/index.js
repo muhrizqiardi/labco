@@ -9,6 +9,8 @@ export default async function handler(req, res) {
   await dbConnect();
 
   switch (method) {
+    /* Get guest book list */
+    /* Scope: Guest, User, Admin */
     case "GET":
       try {
         const agenda = await GuestBook.find(
@@ -20,18 +22,17 @@ export default async function handler(req, res) {
       }
       break;
 
+    /* Add item to guest book */
+    /* Scope: User, Admin */
     case "POST":
       try {
-        // only create data if the user is logged in using next-auth
-
-        if (session) {
+        if (session && (await getRole(session.user.email))) {
           /* create a new model in the database */
           const agenda = await GuestBook.create(req.body);
           res.status(201).json({ success: true, data: agenda });
         } else {
           res.status(405).send({
-            error:
-              "Method not allowed. You must be logged in to create a new guest book.",
+            error: "Method not allowed",
           });
         }
       } catch (error) {
