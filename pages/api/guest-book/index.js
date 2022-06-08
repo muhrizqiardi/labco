@@ -1,6 +1,7 @@
-import dbConnect from "../../../lib/dbConnect";
 import GuestBook from "../../../models/GuestBook";
 import { getSession } from "next-auth/react";
+import getRole from "../../../lib/getRole";
+import dbConnect from "../../../lib/dbConnect";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
     /* Scope: User, Admin */
     case "POST":
       try {
+        console.log("bebek");
         if (session && (await getRole(session.user.email))) {
           /* create a new model in the database */
           const agenda = await GuestBook.create(req.body);
@@ -36,6 +38,7 @@ export default async function handler(req, res) {
           });
         }
       } catch (error) {
+        console.log(error);
         res.status(400).json({ success: false, message: error });
       }
       break;

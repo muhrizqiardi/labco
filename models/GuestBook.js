@@ -7,8 +7,8 @@ const GuestBookSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    duration: {
-      type: Number,
+    finishedTime: {
+      type: Date,
       required: true,
     },
     // Keperluan

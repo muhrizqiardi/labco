@@ -12,7 +12,7 @@ function Sidebar({ isSidebarOpen, setIsSidebarOpen, menuItems }) {
     <aside
       className={`w-full h-full md:w-64 fixed top-0 ${
         isSidebarOpen ? "right-0" : "-right-full"
-      } md:static bg-white border-r flex-shrink-0 self-stretch`}
+      } md:static bg-white shadow flex-shrink-0 self-stretch`}
     >
       <button
         onClick={() => setIsSidebarOpen((x) => !x)}
