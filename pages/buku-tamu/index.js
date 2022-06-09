@@ -6,7 +6,7 @@ import moment from "moment";
 
 function BukuTamu() {
   return (
-    <PageLayout isAdminPage={false} pageTitle={"LABCO - Isi Buku Tamu"}>
+    <PageLayout isAdminPage={false} isRequireAuth={true} pageTitle={"LABCO - Isi Buku Tamu"}>
       <Breadcrumb items={[{ href: "/buku-tamu", name: "Buku Tamu" }]} />
       <h1 className="text-2xl font-bold">Isi Buku Tamu</h1>
       <form

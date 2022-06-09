@@ -1,11 +1,13 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
+import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
   const {
     query: { userId },
     method,
   } = req;
+  const session = await getSession({ req });
 
   await dbConnect();
 
@@ -25,15 +27,20 @@ export default async function handler(req, res) {
 
     case "PUT" /* Edit a model by its ID */:
       try {
-        const agenda = await User.findByIdAndUpdate(id, req.body, {
+        if (!session || session.user._id !== userId) {
+          throw new Error("Unauthorized");
+        }
+        const agenda = await User.findByIdAndUpdate(userId, req.body, {
           new: true,
           runValidators: true,
         });
+        console.log({ agenda });
         if (!agenda) {
           return res.status(400).json({ success: false });
         }
         res.status(200).json({ success: true, data: agenda });
       } catch (error) {
+        console.log({ error });
         res.status(400).json({ success: false });
       }
       break;

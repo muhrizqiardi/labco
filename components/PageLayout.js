@@ -2,9 +2,12 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
-function PageLayout({ pageTitle, children, isAdminPage }) {
+function PageLayout({ pageTitle, children, isAdminPage, isRequireAuth }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { status, data: session } = useSession();
   const menuItems = {
     admin: [
       {
@@ -72,52 +75,47 @@ function PageLayout({ pageTitle, children, isAdminPage }) {
         icon: "bx bx-calendar",
         activeIcon: "bx bxs-calendar",
       },
-      {
-        title: "Berita dan Informasi",
-        href: "/berita",
-        icon: "bx bx-news",
-        activeIcon: "bx bxs-news",
-      },
-      {
-        title: (
-          <>
-            <div className="text-red-600">Logout</div>
-          </>
-        ),
-        href: "/logout",
-        icon: "bx bx-exit",
-      },
     ],
   };
+  useEffect(() => {
+    // redirect to login page if user is not logged in and page is protected
+    if (status !== "loading") {
+      if (isRequireAuth && status !== "authenticated") {
+        window.location.href = "/login";
+      }
+    }
+  }, [status]);
 
-  return (
-    <>
-      <Head>
-        <link
-          href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-          rel="stylesheet"
-        />
-        <title>{pageTitle}</title>
-      </Head>
-      <div className="h-screen flex flex-col items-stretch">
-        <Header
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-          isAdminPage={isAdminPage}
-        />
-        <div className="flex grow">
-          <Sidebar
+  if (true)
+    return (
+      <>
+        <Head>
+          <link
+            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+            rel="stylesheet"
+          />
+          <title>{pageTitle}</title>
+        </Head>
+        <div className="h-screen flex flex-col items-stretch">
+          <Header
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
-            menuItems={isAdminPage ? menuItems.admin : menuItems.user}
+            isAdminPage={isAdminPage}
           />
-          <div className="w-full h-auto flex-auto p-4 flex flex-col items-stretch gap-4">
-            {children}
+          <div className="flex grow">
+            <Sidebar
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+              isAdminPage={isAdminPage}
+              menuItems={isAdminPage ? menuItems.admin : menuItems.user}
+            />
+            <div className="w-full h-auto flex-auto p-4 flex flex-col items-stretch gap-4">
+              {children}
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
 }
 
 export default PageLayout;
