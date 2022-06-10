@@ -1,8 +1,12 @@
 import dbConnect from "../../../lib/dbConnect";
 import News from "../../../models/News";
+import { getSession } from "next-auth/react";
+import _ from "lodash";
+import moment from "moment";
 
 export default async function handler(req, res) {
   const { method } = req;
+  const session = await getSession({ req });
 
   await dbConnect();
 
@@ -19,17 +23,22 @@ export default async function handler(req, res) {
       break;
     case "POST":
       try {
-        if (!session || (await getRole(session.email)) !== "admin")
-          throw "Not Allowed";
-        const news = await News.create(
-          {
-            ...req.body,
-            slug: req.body.title.toLowerCase().replace(/\s+/g, "-"),
-          },
-          {}
-        ); /* create a new model in the database */
+        if (!session || session?.user.role !== "admin") throw "Not Allowed";
+        console.log({
+          ...req.body,
+          slug: _.kebabCase(req.body.title),
+        });
+        const news = await News.create({
+          ...req.body,
+          slug:
+            moment().format("YYYY-MM-DD-hh-mm-ss") +
+            "-" +
+            _.kebabCase(req.body.title),
+          author: session?.user.email,
+        }); /* create a new model in the database */
         res.status(201).json({ success: true, data: news });
       } catch (error) {
+        console.log({ error });
         res.status(400).json({ success: false });
       }
       break;

@@ -6,15 +6,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 // Admin Dashboard
 export default function AdminDashboard() {
-  const { data: session } = useSession();
-  return session ? (
-    <>
-      <PageLayout
-        isAdminPage={true}
-        pageTitle={"LABCO Admin - Home"}
-      ></PageLayout>
-    </>
-  ) : (
-    <>Anda tidak diperbolehkan memasuki halaman ini</>
+  return (
+    <PageLayout
+      isAdminPage={true}
+      pageTitle={"LABCO Admin - Home"}
+      isRequireAuth
+    ></PageLayout>
   );
 }

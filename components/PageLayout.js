@@ -1,9 +1,8 @@
 import Head from "next/head";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 
 function PageLayout({ pageTitle, children, isAdminPage, isRequireAuth }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -86,7 +85,10 @@ function PageLayout({ pageTitle, children, isAdminPage, isRequireAuth }) {
     }
   }, [status]);
 
-  if (true)
+  if (status === "loading") {
+    return <></>;
+  }
+  if (isAdminPage && session?.user?.role === "admin") {
     return (
       <>
         <Head>
@@ -116,6 +118,39 @@ function PageLayout({ pageTitle, children, isAdminPage, isRequireAuth }) {
         </div>
       </>
     );
+  } else if (isAdminPage && session?.user?.role !== "admin") {
+    return <>Anda tidak diperbolehkan mengakses halaman ini</>;
+  } else if (!isAdminPage) {
+    return (
+      <>
+        <Head>
+          <link
+            href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+            rel="stylesheet"
+          />
+          <title>{pageTitle}</title>
+        </Head>
+        <div className="h-screen flex flex-col items-stretch">
+          <Header
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            isAdminPage={isAdminPage}
+          />
+          <div className="flex grow">
+            <Sidebar
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+              isAdminPage={isAdminPage}
+              menuItems={isAdminPage ? menuItems.admin : menuItems.user}
+            />
+            <div className="w-full h-auto flex-auto p-4 flex flex-col items-stretch gap-4">
+              {children}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 }
 
 export default PageLayout;

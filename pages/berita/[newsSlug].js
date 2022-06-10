@@ -15,7 +15,7 @@ function Berita() {
     if (!router.isReady) return;
     fetch(`/api/news/${newsSlug}`)
       .then((res) => res.json())
-      .then((data) => setNewsData(data));
+      .then((data) => setNewsData(data?.data ?? []));
     setIsLoading(false);
   }, [newsSlug, router.isReady]);
 

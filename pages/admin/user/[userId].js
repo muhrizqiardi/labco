@@ -10,7 +10,11 @@ function UserEdit() {
 
   return (
     <>
-      <PageLayout isAdminPage={true} pageTitle={"LABCO Admin - Edit User"}>
+      <PageLayout
+        isAdminPage={true}
+        pageTitle={"LABCO Admin - Edit User"}
+        isRequireAuth
+      >
         <h1 className="text-2xl font-bold">Edit User</h1>
         <form
           action=""
@@ -38,7 +42,12 @@ function UserEdit() {
             </div>
           </div>
           <TextField label="Email" name="email" type="email" required />
-          <TextField label="Password" name="password" type="password" required />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            required
+          />
 
           <Button.Primary>Edit User</Button.Primary>
         </form>

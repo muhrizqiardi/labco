@@ -55,9 +55,14 @@ export default NextAuth({
       // find user in database
       await dbConnect();
 
-      let userData = await User.findOne({
-        email: session.user.email,
-      }, "_id fullName email role profilePicture bio");
+      let userData = await User.findOne(
+        {
+          email: session.user.email,
+        },
+        "_id fullName email role profilePicture bio"
+      );
+
+      console.log({ userData });
 
       return { ...session, user: userData };
     },
