@@ -10,35 +10,8 @@ function ManajemenInventaris() {
   return (
     <PageLayout
       isAdminPage={true}
+      isRequireAuth
       pageTitle={"LABCO Admin - Manajemen Inventaris"}
-      menuItems={[
-        {
-          title: "Dashboard",
-          href: "/admin",
-          icon: "bx bx-home",
-        },
-        {
-          title: "Manajemen Inventaris",
-          href: "/admin/inventaris",
-          icon: "bx bxs-user",
-          isCurrentPage: true,
-        },
-        { title: "Manajemen User", href: "/admin/user", icon: "bx bx-user" },
-        {
-          title: "Manajemen Konten Informasi dan Berita",
-          href: "/admin/konten",
-          icon: "bx bx-news",
-        },
-        {
-          title: (
-            <>
-              <div className="text-red-600">Logout</div>
-            </>
-          ),
-          href: "/logout",
-          icon: "bx bx-exit",
-        },
-      ]}
     >
       <div className="flex justify-between items-center">
         <h1 className="text-md font-bold">Inventaris</h1>

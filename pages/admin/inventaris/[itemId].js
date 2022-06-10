@@ -12,6 +12,7 @@ function ItemDetail() {
     <>
       <PageLayout
         isAdminPage={true}
+        isRequireAuth
         pageTitle={"LABCO Admin - Barang Baru"}
       >
         <h1 className="text-2xl font-bold">Edit Barang</h1>

@@ -1,6 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
-import Item from "../../../models/Item";
+import GuestBook from "../../../models/GuestBook";
 import { getSession } from "next-auth/react";
+import getRole from "../../../lib/getRole";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -9,28 +10,29 @@ export default async function handler(req, res) {
   await dbConnect();
 
   switch (method) {
-    // get inventory item list from mongoose model Item
     case "GET":
+      /* Scope: Admin */
       try {
-        const items = await Item.find(
+        const agenda = await GuestBook.find(
           {}
         ); /* find all the data in our database */
-        res.status(200).json({ success: true, data: items });
+        res.status(200).json({ success: true, data: agenda });
       } catch (error) {
         res.status(400).json({ success: false, message: error });
       }
       break;
 
-    // post inventory item to mongoose model Item
     case "POST":
+      /* Scope: Admin */
       try {
-        if (session && (await getRole(session.user.email))) {
+        if (session && await getRole(session.user.email) === "admin") {
           /* create a new model in the database */
-          const item = await Item.create(req.body);
-          res.status(201).json({ success: true, data: item });
+          const agenda = await GuestBook.create(req.body);
+          res.status(201).json({ success: true, data: agenda });
         } else {
           res.status(405).send({
-            error: "Method not allowed",
+            error:
+              "Method not allowed. You must be logged in to create a new guest book.",
           });
         }
       } catch (error) {

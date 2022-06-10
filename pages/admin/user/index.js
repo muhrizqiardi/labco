@@ -8,7 +8,7 @@ function User() {
   const router = useRouter();
   
   return (
-    <PageLayout title="LABCO - Manajemen User" isAdminPage>
+    <PageLayout title="LABCO - Manajemen User" isAdminPage isRequireAuth>
       <h1 className="text-2xl font-bold">Manajemen User</h1>
       <div className="flex justify-between items-center">
         <h1 className="text-md font-bold">User</h1>

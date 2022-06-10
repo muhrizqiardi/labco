@@ -1,11 +1,10 @@
 import dbConnect from "../../../lib/dbConnect";
-import getRole from "../../../lib/getRole";
-import News from "../../../models/News";
+import User from "../../../models/User";
 import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
   const {
-    query: { newsSlug },
+    query: { userId },
     method,
   } = req;
   const session = await getSession({ req });
@@ -13,14 +12,14 @@ export default async function handler(req, res) {
   await dbConnect();
 
   switch (method) {
-    case "GET":
+    /* Scope:  */
+    case "GET" /* Get a model by its ID */:
       try {
-        const newsData = await News.findOne({ slug: newsSlug });
-        console.log;
-        if (!newsData) {
+        const user = await User.findById(userId);
+        if (!user) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: newsData });
+        res.status(200).json({ success: true, data: user });
       } catch (error) {
         res.status(400).json({ success: false });
       }
@@ -28,30 +27,28 @@ export default async function handler(req, res) {
 
     case "PUT" /* Edit a model by its ID */:
       try {
-        if (!session || session.user.role !== "admin") throw "Not Allowed";
-        const editedNews = await News.findOneAndUpdate(
-          {
-            slug: newsSlug,
-          },
-          {
-            ...req.body,
-          }
-        );
-        if (!editedNews) {
+        if (!session || session.user._id !== userId) {
+          throw new Error("Unauthorized");
+        }
+        const agenda = await User.findByIdAndUpdate(userId, req.body, {
+          new: true,
+          runValidators: true,
+        });
+        console.log({ agenda });
+        if (!agenda) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: editedNews });
+        res.status(200).json({ success: true, data: agenda });
       } catch (error) {
-        console.error(error);
+        console.log({ error });
         res.status(400).json({ success: false });
       }
       break;
 
     case "DELETE" /* Delete a model by its ID */:
       try {
-        if (!session || session.user.role !== "admin") throw "Not Allowed";
-        const deletedNews = await News.deleteOne({ slug: newsSlug });
-        if (!deletedNews) {
+        const deletedAgenda = await User.deleteOne({ _id: userId });
+        if (!deletedAgenda) {
           return res.status(400).json({ success: false });
         }
         res.status(200).json({ success: true, data: {} });

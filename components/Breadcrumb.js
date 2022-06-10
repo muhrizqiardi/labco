@@ -33,7 +33,7 @@ function BreadcrumbChevron() {
 function Breadcrumb({ items }) {
   return (
     <nav
-      className="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200  "
+      className="flex py-3 px-5 text-gray-700 bg-white rounded-lg shadow"
       aria-label="Breadcrumb"
     >
       <ol className="inline-flex items-center space-x-1 md:space-x-3">

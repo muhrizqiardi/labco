@@ -3,12 +3,27 @@ import Button from "../../../components/Button";
 import PageLayout from "../../../components/PageLayout";
 import Table from "../../../components/Table";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 function ContentManagement() {
   const router = useRouter();
 
+  // fetch data from /api/news and store it in news state
+  const [news, setNews] = useState([]);
+  useEffect(() => {
+    fetch("/api/news")
+      .then((response) => response.json())
+      .then((data) => {
+        setNews(data.data);
+      });
+  }, []);
+
   return (
-    <PageLayout isAdminPage={true} pageTitle={"LABCO Admin - Manajemen Konten"}>
+    <PageLayout
+      isAdminPage={true}
+      pageTitle={"LABCO Admin - Manajemen Konten"}
+      isRequireAuth
+    >
       <div className="flex justify-between items-center">
         <h1 className="text-md font-bold">Manajemen Konten</h1>
         <Button.Primary onClick={() => router.push("/admin/konten/new")}>
@@ -18,28 +33,17 @@ function ContentManagement() {
       <Table
         tableHeaders={["Slug", "Judul Artikel", "Penulis", "Tanggal", "Aksi"]}
         tableData={[
-          [
-            "bebek-goreng-enak-rasanya-beebeb-aku-",
-            "Led ask possible mistress relation elegance eat likewise debating",
-            "rizqi.jpg@gmail.com",
-            "13 April 2020, pukul 13.00",
+          ...news.map((newsItem) => [
+            newsItem?.slug ?? "-",
+            newsItem?.title ?? "-",
+            newsItem?.author ?? "-",
+            newsItem?.createdAt ?? "-",
             <>
-              <Link href="/admin/user/123">
+              <Link href={`/admin/konten/${newsItem.slug}`}>
                 <a className="text-blue-700 font-bold hover:underline">Edit</a>
               </Link>
             </>,
-          ],
-          [
-            "bebek-goreng-enak-rasanya-beebeb-aku-",
-            "Led ask possible mistress relation elegance eat likewise debating",
-            "rizqi.jpg@gmail.com",
-            "13 April 2020, pukul 13.00",
-            <>
-              <Link href="/admin/user/123">
-                <a className="text-blue-700 font-bold hover:underline">Edit</a>
-              </Link>
-            </>,
-          ],
+          ]),
         ]}
       />
     </PageLayout>

@@ -1,25 +1,52 @@
-import Item from "../../../models/Item"; // mengimpor objek Items
+// create an handler for get inventory item list, and post inventory item
+import dbConnect from "../../../lib/dbConnect";
+import Item from "../../../models/Item";
+import { getSession } from "next-auth/react";
 
-// Menerima request pada path /api/items
-export default function handler(req, res) {
-  // Memproses GET request
-  // Untuk meng-list semua item/barang inventaris dari database
-  if (req.method === "GET") {
-    Item.find({}, function (err, item) {
-      // Jika error, akan merespon dengan kode 400
-      if (err) res.status(400);
-      // Jika tidak error akan merespon dengan kode 200 (OK) beserta objeknya
-      res.status(200).json(item);
-    });
+export default async function handler(req, res) {
+  const {
+    query: { page, limit },
+    method,
+  } = req;
+  const session = await getSession({ req });
 
-    // Memproses POST request
-    // Untuk menambahkan item/barang inventaris dari database
-  } else if (req.method === "POST") {
-    Item.create(req.body, function (err, item) {
-      // Jika error, akan merespon dengan kode 500 (internal error)
-      if (err) res.status(500);
-      // Jika tidak error akan merespon dengan kode 200 (OK) beserta objeknya
-      res.status(200).json(item);
-    });
+  await dbConnect();
+
+  switch (method) {
+    // get inventory item detail from mongoose model Item
+    case "GET":
+      try {
+        // throw error if user isn't an admin
+        if ((await getRole(session.user.email)) !== "admin")
+          throw "Not allowed";
+        const items = await Item.find({})
+          .skip(page * limit)
+          .limit(limit); /* find all the data in our database */
+        res.status(200).json({ success: true, data: items });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error });
+      }
+      break;
+
+    // post inventory item to mongoose model Item
+    case "POST":
+      try {
+        if (session && (await getRole(session.user.email))) {
+          /* create a new model in the database */
+          const item = await Item.create(req.body);
+          res.status(201).json({ success: true, data: item });
+        } else {
+          res.status(405).send({
+            error: "Method not allowed",
+          });
+        }
+      } catch (error) {
+        res.status(400).json({ success: false, message: error });
+      }
+      break;
+
+    default:
+      res.status(400).json({ success: false });
+      break;
   }
 }
