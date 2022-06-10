@@ -69,6 +69,12 @@ function PageLayout({ pageTitle, children, isAdminPage, isRequireAuth }) {
         activeIcon: "bx bxs-book",
       },
       {
+        title: "Berita dan Informasi",
+        href: "/berita",
+        icon: "bx bx-news",
+        activeIcon: "bx bxs-news",
+      },
+      {
         title: "Jadwal Agenda",
         href: "/agenda",
         icon: "bx bx-calendar",
