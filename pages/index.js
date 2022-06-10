@@ -4,6 +4,7 @@ import Agenda from "../components/AgendaWidget";
 import Button from "../components/Button";
 import News from "../components/NewsWidget";
 import PageLayout from "../components/PageLayout";
+import moment from "moment";
 
 function LandingPage() {
   const router = useRouter();
@@ -12,7 +13,9 @@ function LandingPage() {
   return (
     <PageLayout isAdminPage={false}>
       <section className="py-16 px-4 flex flex-col items-center justify-center gap-4 text-center">
-        <p className="text-sm">Senin, 23 Mei 2022, pukul 16.59</p>
+        <p className="text-sm">
+          {moment().format("dddd, DD MMMM YYYY, [pukul] hh.mm")}
+        </p>
         <h1 className="text-3xl font-bold">Selamat Datang di LABCO</h1>
         <p className="text-sm">Sistem Informasi Lab</p>
         {status !== "authenticated" ? (
@@ -32,7 +35,9 @@ function LandingPage() {
       </section>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-4 items-start">
         <Agenda />
-        <News />
+        <div className="col-span-2">
+          <News />
+        </div>
       </div>
     </PageLayout>
   );

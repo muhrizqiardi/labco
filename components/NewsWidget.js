@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import moment from "moment";
+import "moment/locale/id"
+moment.locale('id')
 
 function News() {
   // fetch from api /api/news with loading state
@@ -15,7 +18,7 @@ function News() {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg border sm:p-8 col-span-2">
+    <div className="p-4 bg-white shadow rounded-lg border sm:p-8 ">
       <div className="flex justify-between items-center mb-4">
         <h5 className="text-xl font-bold leading-none text-gray-900 ">
           Berita dan Informasi
@@ -29,7 +32,7 @@ function News() {
         <></>
       )}
       <div className="flex flex-col">
-        {news?.data?.map((news) => (
+        {news?.data?.slice(0, 3).map((news) => (
           <article className="flex flex-col py-4 md:flex-row gap-2 md:gap-4 border-b">
             <img
               src={news.coverImage}
@@ -42,7 +45,9 @@ function News() {
                 </a>
               </Link>
               <p className="mb-1.5 text-xs text-gray-700">
-                22 Juni 2023, pukul 13:11
+                {moment(news.createdAt).format(
+                  "dddd, DD MMMM YYYY, [pukul] hh.mm"
+                )}
               </p>
               <p className="text-xs text-gray-800">
                 {news.body.substring(0, 100)}...
@@ -57,6 +62,13 @@ function News() {
         ) : (
           <></>
         )}
+      </div>
+      <div className="flex flex-row-reverse justify-between items-center mt-4">
+        <Link href="/berita">
+          <a className="text-sm font-medium text-blue-600 hover:underline ">
+            Lihat selengkapnya
+          </a>
+        </Link>
       </div>
     </div>
   );

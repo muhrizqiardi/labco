@@ -15,9 +15,11 @@ function Berita() {
     if (!router.isReady) return;
     fetch(`/api/news/${newsSlug}`)
       .then((res) => res.json())
-      .then((data) => setNewsData(data?.data ?? []));
+      .then((data) => setNewsData(data));
     setIsLoading(false);
   }, [newsSlug, router.isReady]);
+
+  console.log(newsData);
 
   return (
     <PageLayout isAdminPage={false} pageTitle={"LABCO - Berita dan Informasi"}>

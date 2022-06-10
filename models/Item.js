@@ -11,7 +11,7 @@ const ItemSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: Boolean,
+      type: String,
       required: true,
     },
     quantity: {

@@ -3,11 +3,25 @@ import { useRouter } from "next/router";
 import Button from "../../../components/Button";
 import PageLayout from "../../../components/PageLayout";
 import Table from "../../../components/Table";
+import { useEffect, useState } from "react";
 
 function ManajemenInventaris() {
   const router = useRouter();
 
-  return (
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState();
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("/api/items")
+      .then((response) => response.json())
+      .then((data) => {
+        setItems(data.data);
+        setIsLoading(false);
+      });
+  }, []);
+
+  return !isLoading ? (
     <PageLayout
       isAdminPage={true}
       isRequireAuth
@@ -29,33 +43,23 @@ function ManajemenInventaris() {
           "Aksi",
         ]}
         tableData={[
-          [
-            "62930cbe865bffba2c0a6ccd",
-            "Kursi Herman Miller",
-            "10",
-            "Baik",
-            "Minggu, 29 Mei 2022, pukul 08.25",
+          ...(items ?? []).map((item) => [
+            item?._id ?? "-",
+            item?.name ?? "-",
+            item?.quantity ?? "-",
+            item?.condition ? "Baik" : "Rusak",
+            item?.createdAt ?? "-",
             <>
-              <Link href="/inventaris/123">
+              <Link href={`/admin/inventaris/${item._id}`}>
                 <a className="text-blue-700 font-bold hover:underline">Edit</a>
               </Link>
             </>,
-          ],
-          [
-            "62930cbe865bffba2c0a6ccd",
-            "ASUS ROG Strix",
-            "15",
-            "Rusak",
-            "Senin, 30 Mei 2022, pukul 13.00",
-            <>
-              <Link href="/inventaris/123">
-                <a className="text-blue-700 font-bold hover:underline">Edit</a>
-              </Link>
-            </>,
-          ],
+          ]),
         ]}
       />
     </PageLayout>
+  ) : (
+    <></>
   );
 }
 export default ManajemenInventaris;

@@ -19,7 +19,7 @@ function Agenda(props) {
     <div className="p-4 bg-white shadow rounded-lg border sm:p-8">
       <div className="flex justify-between items-center mb-4">
         <h5 className="text-xl font-bold leading-none text-gray-900 ">
-          Agenda Mendatang
+          Agenda Hari Ini
         </h5>
       </div>
       {isLoading ? (

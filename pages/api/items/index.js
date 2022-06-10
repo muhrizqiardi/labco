@@ -4,10 +4,7 @@ import Item from "../../../models/Item";
 import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
-  const {
-    query: { page, limit },
-    method,
-  } = req;
+  const { method } = req;
   const session = await getSession({ req });
 
   await dbConnect();
@@ -17,13 +14,13 @@ export default async function handler(req, res) {
     case "GET":
       try {
         // throw error if user isn't an admin
-        if ((await getRole(session.user.email)) !== "admin")
-          throw "Not allowed";
-        const items = await Item.find({})
-          .skip(page * limit)
-          .limit(limit); /* find all the data in our database */
+        if (session.user.role !== "admin") throw "Not allowed";
+        const items = await Item.find(
+          {}
+        ); /* find all the data in our database */
         res.status(200).json({ success: true, data: items });
       } catch (error) {
+        console.log(error);
         res.status(400).json({ success: false, message: error });
       }
       break;
@@ -31,7 +28,7 @@ export default async function handler(req, res) {
     // post inventory item to mongoose model Item
     case "POST":
       try {
-        if (session && (await getRole(session.user.email))) {
+        if (session && session.user.role === "admin") {
           /* create a new model in the database */
           const item = await Item.create(req.body);
           res.status(201).json({ success: true, data: item });
@@ -41,6 +38,7 @@ export default async function handler(req, res) {
           });
         }
       } catch (error) {
+        console.log(error);
         res.status(400).json({ success: false, message: error });
       }
       break;

@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import PageLayout from "../../components/PageLayout";
 import TextField from "../../components/TextField";
 import moment from "moment";
+import GuestBookWidget from "../../components/GuestBookWidget";
 
 function BukuTamu() {
   return (
@@ -45,7 +46,8 @@ function BukuTamu() {
         <TextField label="Keperluan" name="usagePurpose" required />
 
         <div className="my-4"></div>
-        <Button.Primary on>Submit</Button.Primary>
+        <Button.Primary>Submit</Button.Primary>
+        <GuestBookWidget />
       </form>
     </PageLayout>
   );

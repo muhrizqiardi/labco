@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const GuestBookSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    user: {
+      type: String,
+      required: true,
+    },
     startTime: {
       type: Date,
       required: true,

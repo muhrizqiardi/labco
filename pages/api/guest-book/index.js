@@ -1,6 +1,5 @@
 import GuestBook from "../../../models/GuestBook";
 import { getSession } from "next-auth/react";
-import getRole from "../../../lib/getRole";
 import dbConnect from "../../../lib/dbConnect";
 
 export default async function handler(req, res) {
@@ -14,10 +13,10 @@ export default async function handler(req, res) {
     /* Scope: Guest, User, Admin */
     case "GET":
       try {
-        const agenda = await GuestBook.find(
+        const guestBook = await GuestBook.find(
           {}
         ); /* find all the data in our database */
-        res.status(200).json({ success: true, data: agenda });
+        res.status(200).json({ success: true, data: guestBook });
       } catch (error) {
         res.status(400).json({ success: false, message: error });
       }
@@ -27,10 +26,12 @@ export default async function handler(req, res) {
     /* Scope: User, Admin */
     case "POST":
       try {
-        console.log("bebek");
-        if (session && (await getRole(session.user.email))) {
+        if (session) {
           /* create a new model in the database */
-          const agenda = await GuestBook.create(req.body);
+          const agenda = await GuestBook.create({
+            ...req.body,
+            user: session.user.email,
+          });
           res.status(201).json({ success: true, data: agenda });
         } else {
           res.status(405).send({

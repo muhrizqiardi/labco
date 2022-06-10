@@ -19,7 +19,31 @@ function InventarisNew() {
       >
         <h1 className="text-2xl font-bold">Tambah Barang Baru</h1>
         <form
-          action=""
+          onSubmit={async (event) => {
+            // post form values to /api/agenda
+            event.preventDefault();
+            if (!fileSrc) return alert("Tambahkan gambar barang");
+            fetch("/api/items", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: event.target.name.value,
+                condition: event.target.condition.value,
+                quantity: event.target.quantity.value,
+                image: fileSrc,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log({ data });
+                window.location.pathname = `/admin/inventaris`;
+              })
+              .catch((error) => {
+                console.log({ error });
+              });
+          }}
           className="max-w-2xl mt-8  flex flex-col items-stretch gap-4"
         >
           <ImageUploader
@@ -28,7 +52,13 @@ function InventarisNew() {
             setFileSrc={setFileSrc}
           />
           <TextField label="Nama Barang" name="name" type="text" required />
-          <TextField label="Qty" name="qty" type="number" value={1} required />
+          <TextField
+            label="Qty"
+            name="quantity"
+            type="number"
+            defaultValue={1}
+            required
+          />
           <div className="mb-6">
             <div className="peer-focus:font-medium text-xs text-gray-500">
               Kondisi
