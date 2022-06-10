@@ -27,7 +27,12 @@ function Agenda() {
       isRequireAuth
       pageTitle={"LABCO - Agenda " + today.format("dddd, DD MMMM YYYY")}
     >
-      <h1 className="text-2xl font-bold">Jadwal Agenda</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-md font-bold">Manajemen Agenda</h1>
+        <Button.Primary onClick={() => router.push("/admin/agenda-baru")}>
+          Agenda Baru
+        </Button.Primary>
+      </div>
       <section className="flex gap-6">
         <Button.Secondary
           onClick={() => {
