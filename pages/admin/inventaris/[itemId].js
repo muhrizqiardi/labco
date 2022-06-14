@@ -100,6 +100,15 @@ function ItemDetail() {
           </div>
 
           <Button.Primary>Simpan</Button.Primary>
+          <Button.Secondary type="button" onClick={async () => {
+            // create delete request on /api/items/[itemId] and redirect to /admin/inventaris
+            await fetch(`/api/items/${router.query.itemId}`, {
+              method: "DELETE",
+            });
+            window.location.pathname = `/admin/inventaris`;
+          }}>
+            <span className="text-red-600">Hapus</span>
+          </Button.Secondary>
         </form>
       </PageLayout>
     </>

@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     case "DELETE" /* Delete a model by its ID */:
       try {
         if (!session || session.user.role !== "admin") throw "Not Allowed";
-        const deletedItem = await Item.deleteById(itemId);
+        const deletedItem = await Item.deleteOne({ _id: itemId });
         if (!deletedItem) {
           return res.status(400).json({ success: false });
         }

@@ -62,8 +62,6 @@ export default NextAuth({
         "_id fullName email role profilePicture bio"
       );
 
-      console.log({ userData });
-
       return { ...session, user: userData };
     },
   },

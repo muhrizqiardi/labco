@@ -36,8 +36,8 @@ function EditAgenda() {
           onSubmit={async (event) => {
             // post form values to /api/agenda
             event.preventDefault();
-            fetch("/api/agenda", {
-              method: "POST",
+            fetch(`/api/agenda/${router.query.agendaId}`, {
+              method: "PUT",
               headers: {
                 "Content-Type": "application/json",
               },
@@ -86,7 +86,18 @@ function EditAgenda() {
             defaultValue={agenda?.lecturer}
             required
           />
-          <Button.Primary>Edit Barang</Button.Primary>
+          <Button.Primary>Simpan</Button.Primary>
+          <Button.Secondary
+            type="button"
+            onClick={async () => {
+              await fetch(`/api/agenda/${router.query.agendaId}`, {
+                method: "DELETE",
+              });
+              window.location.pathname = `/admin/agenda`;
+            }}
+          >
+            <span className="text-red-600">Hapus</span>
+          </Button.Secondary>
         </form>
       </PageLayout>
     </>

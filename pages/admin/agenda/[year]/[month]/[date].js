@@ -82,7 +82,9 @@ function Agenda() {
                       </a>
                     </Link>
                     <p className="text-sm text-gray-500 truncate ">
-                      {moment(agendaItem?.date).format(
+                      {moment(agendaItem?.startTime).format(
+                        "dddd, DD MMMM YYYY, HH:mm"
+                      )} - {moment(agendaItem?.finishedTime).format(
                         "dddd, DD MMMM YYYY, HH:mm"
                       )}
                     </p>

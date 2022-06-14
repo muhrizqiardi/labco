@@ -1,13 +1,15 @@
 import dbConnect from "../../../lib/dbConnect";
 import Agenda from "../../../models/Agenda";
 import { getSession } from "next-auth/react";
-import getRole from "../../../lib/getRole";
 
 export default async function handler(req, res) {
   const {
     query: { agendaId },
     method,
   } = req;
+
+  console.log({ agendaId });
+
   const session = await getSession({ req });
 
   await dbConnect();
@@ -31,8 +33,8 @@ export default async function handler(req, res) {
     /* Scope: Admin */
     case "PUT" /* Edit a model by its ID */:
       try {
-        if (session && (await getRole(session.user.email))) {
-          let agenda = await Agenda.findByIdAndUpdate(id, req.body, {
+        if (session && session.user.role === "admin") {
+          let agenda = await Agenda.findByIdAndUpdate(agendaId, req.body, {
             new: true,
             runValidators: true,
           });
@@ -44,6 +46,7 @@ export default async function handler(req, res) {
           throw "Not Allowed";
         }
       } catch (error) {
+        console.error(error);
         res.status(400).json({ success: false });
       }
       break;
@@ -52,16 +55,15 @@ export default async function handler(req, res) {
     /* Scope: Admin */
     case "DELETE" /* Delete a model by its ID */:
       try {
-        if (session && (await getRole(session.user.email))) {
-          const deletedAgenda = await Agenda.deleteOne({ _id: agendaId });
-          if (!deletedAgenda) {
-            return res.status(400).json({ success: false });
-          }
-          res.status(200).json({ success: true, data: {} });
-        } else {
-          throw "Not Allowed";
+        if (!session || session.user.role !== "admin") throw "Not Allowed";
+        const deletedAgenda = await Agenda.findByIdAndDelete(agendaId);
+        if (!deletedAgenda) {
+          return res.status(400).json({ success: false });
         }
+        res.status(200).json({ success: true, data: {} });
+        throw "Not Allowed";
       } catch (error) {
+        console.error(error);
         res.status(400).json({ success: false });
       }
       break;

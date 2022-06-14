@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       try {
         const guestBook = await GuestBook.find(
           {}
-        ); /* find all the data in our database */
+        ).sort("-createdAt"); /* find all the data in our database */
         res.status(200).json({ success: true, data: guestBook });
       } catch (error) {
         res.status(400).json({ success: false, message: error });
